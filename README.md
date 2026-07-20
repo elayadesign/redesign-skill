@@ -4,8 +4,7 @@
 
 Works with Claude Code, Cursor, Codex, Windsurf, and anything else that reads a markdown rules file.
 
-<!-- Replace with your before/after screenshot -->
-![Before and after](./assets/before-after.png)
+
 
 ---
 
