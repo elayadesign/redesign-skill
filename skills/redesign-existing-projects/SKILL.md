@@ -78,12 +78,13 @@ To adapt this skill to a different design system, edit only the Design Values se
 
 ## Interactivity and states
 
-- **Default or instant transitions.** Every transition uses a custom cubic bezier with real weight, not `ease` or `linear`. Baseline: `transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]`. Micro interactions such as color shifts may run shorter, but never below 200ms and never on a default curve.
-- **Elements appearing statically on scroll.** Content entering the viewport fades up heavily: `translate-y-16 blur-md opacity-0` resolving to `translate-y-0 blur-0 opacity-100` over 800ms or longer.
-- **`window.addEventListener('scroll')` for reveals.** Replace with `IntersectionObserver` or Framer Motion `whileInView`. Scroll listeners cause continuous reflow and destroy mobile performance.
-- **Standard docked navbar.** Replace with the floating island pattern: a detached glass pill, `mt-6 mx-auto w-max rounded-full`.
-- **Hamburger icon that swaps or disappears.** The lines must rotate and translate into a true X using `rotate-45` and `-rotate-45` with absolute positioning.
-- **Mobile menu as a dropdown.** Open a screen filling overlay with `backdrop-blur-3xl` over `bg-black/80` or `bg-white/80`, with links staggered in from `translate-y-12 opacity-0` using incremental delays.
+- **Default easing curves.** `ease`, `linear`, and `ease-in-out` make motion feel mechanical. Switch to the base curve in Design Values, `duration-500` for movement and `duration-300` for color or opacity, never under 200ms.
+- **Content that is simply there on scroll.** Sections should rise a short distance and fade in as they enter the viewport, once, over 600 to 800ms.
+- **Scroll listeners driving animation.** Replace `window.addEventListener('scroll')` with `IntersectionObserver` or Framer Motion `whileInView`; per frame listeners cost real performance on mobile.
+- **A nav bar welded to the top edge.** Let it float slightly off the edge, sized to its content, on a translucent blurred surface.
+- **A menu icon that swaps instantly.** Animate the change between open and closed states on the base curve.
+- **A cramped mobile dropdown.** Use a full height panel, with links arriving one after another in reading order (about 60ms apart, whole sequence under 400ms).
+- **No reduced motion handling.** Under `prefers-reduced-motion`, swap movement for a plain fade.
 - **No hover states on buttons.** Add a background shift, slight scale, or translate.
 - **No active or pressed feedback.** Add `scale(0.98)` or `translateY(1px)` on press.
 - **Missing focus ring.** Visible focus indicators are an accessibility requirement, not a style choice.
@@ -97,23 +98,20 @@ To adapt this skill to a different design system, edit only the Design Values se
 
 ## Content
 
-- **Generic names like "John Doe".** Use diverse, realistic names.
-- **Fake round numbers like `99.99%`, `50%`, `$100.00`.** Use organic data: `47.2%`, `$99.00`, `+1 (312) 847-1928`.
-- **Placeholder companies like "Acme Corp", "Nexus", "SmartFlow".** Invent contextual, believable brand names.
-- **AI copywriting cliches.** Never "Elevate", "Seamless", "Unleash", "Next Gen", "Game changer", "Delve", "Tapestry", or "In the world of". Write plain, specific language.
+- **Placeholder people.** Stock names and repeated faces read as fake. Use full, specific names that fit the audience, and a different face for every person.
+- **Suspiciously round numbers.** Real metrics carry decimals and odd final digits; real prices look like real pricing. Vary dates across lists.
+- **Generic brand names.** Customer logos and company names should sound like they belong to the product's industry.
+- **Filler marketing words.** Cut "revolutionize", "supercharge", "cutting edge", "effortless", "transform your workflow", "take it to the next level", "harness the power", "world class". Say what the product actually does.
 - **Vague value propositions.** "Streamline" and "optimize" say nothing. Replace with a measurable outcome: "Cut weekly reporting from 4 hours to 15 minutes".
 - **Features listed with no outcome.** Every feature line should state what it means for the user.
 - **Weak CTAs.** Never "Learn more" or "Submit". Use a verb plus what they get: "Start free trial", "Book a demo".
 - **Competing CTAs above the fold.** One primary action per page.
 - **Proof buried at the bottom.** Move testimonials, logos, and numbers next to the claims they support.
 - **No risk reversal.** Add at least one of free trial, free plan, no credit card, cancel anytime, money back guarantee.
-- **Exclamation marks in success messages.** Remove them. Be confident, not loud.
-- **"Oops!" error messages.** Be direct: "Connection failed. Please try again."
-- **Passive voice.** "We could not save your changes", not "Mistakes were made".
-- **Identical blog post dates.** Randomize them.
-- **The same avatar for multiple users.** Unique asset per person.
-- **Lorem Ipsum.** Never. Write real draft copy.
-- **Title Case On Every Header.** Sentence case instead.
+- **Loud or cute system messages.** Confirmations should be calm and specific ("Invoice sent to Dana"). Errors should name what failed and the next step ("Upload failed. The file is over 20 MB."). No exclamation marks, no interjections.
+- **Passive voice.** Name who did what: "We couldn't save your draft."
+- **Placeholder text.** Any "Your headline here" or Latin filler is a blocker. Write real draft copy.
+- **Title Case everywhere.** Use sentence case for headings and buttons.
 
 ## Component patterns
 
@@ -162,37 +160,6 @@ What AI builds typically forget entirely:
 
 ---
 
-# Upgrade techniques
-
-High impact replacements to pull from once the audit fixes are in.
-
-**Typography**
-- Variable font animation, interpolating weight or width on scroll or hover
-- Outlined to filled text transitions on scroll entry
-- Text mask reveals, with large type acting as a window onto video or imagery
-
-**Layout**
-- Broken grid and deliberate asymmetry, with elements overlapping or bleeding off screen
-- Whitespace maximization to force focus onto one element
-- Parallax card stacks that stick and pile during scroll
-- Split screen scroll with halves moving in opposite directions
-
-**Motion**
-- Smooth scroll with inertia, decoupled from browser defaults
-- Staggered entry, never mounting everything at once
-- Spring physics on all interactive elements
-- Scroll driven reveals through expanding masks, wipes, or draw on SVG paths
-
-**Surfaces**
-- True glassmorphism: `backdrop-filter` plus a 1px inner border and a subtle inner shadow to simulate edge refraction
-- Spotlight borders that illuminate under the cursor
-- Fixed, `pointer-events: none` grain overlays to break digital flatness
-- Colored, tinted shadows carrying the background hue
-
-Note: none of these may reintroduce a background gradient. Depth comes from noise, imagery, shadow, and layering.
-
----
-
 # Fix priority
 
 Maximum visual impact, minimum risk, in this order:
@@ -201,7 +168,7 @@ Maximum visual impact, minimum risk, in this order:
 2. **Color and surface cleanup** — snap to the approved palette, remove background gradients
 3. **Hover, active, and focus states** — makes the interface feel alive
 4. **Layout and spacing** — grid, max width, spacing scale, nested radius formula
-5. **Motion pass** — custom easing curves, scroll reveals via IntersectionObserver, island nav
+5. **Motion pass** — base easing curve, scroll reveals via IntersectionObserver, floating nav and mobile menu
 6. **Replace generic components** — swap cliche patterns for the alternatives above
 7. **Loading, empty, and error states** — makes it feel finished
 8. **Copy pass** — remove cliches, add specificity, fix CTAs
@@ -238,7 +205,7 @@ The single source of truth for this skill. Edit this section to adapt it to your
 
 **Icons:** Phosphor, Solar, Iconamoon.
 
-**Motion:** `transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]`. Scroll reveals 800ms or longer via `IntersectionObserver`.
+**Motion:** base curve `ease-[cubic-bezier(0.22,1,0.36,1)]`, `duration-500` for movement, `duration-300` for color and opacity. Scroll reveals 600 to 800ms via `IntersectionObserver`. Respect `prefers-reduced-motion`.
 
 **Type scale:** Tailwind default.
 
@@ -257,3 +224,37 @@ The single source of truth for this skill. Edit this section to adapt it to your
 | `text-7xl` | 72px | 1 |
 | `text-8xl` | 96px | 1 |
 | `text-9xl` | 128px | 1 |
+
+---
+
+## Credits
+
+Parts of this skill were adapted from [taste-skill](https://github.com/Leonxlnx/taste-skill) by Leon Lin ([@LexnLin](https://x.com/LexnLin)), MIT licensed. Its redesign audit structure, content realism checks, and motion and navigation ideas informed the matching sections here, which have since been rewritten.
+
+<details>
+<summary>taste-skill license</summary>
+
+```
+MIT License
+
+Copyright (c) 2026 Leonxlnx
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+</details>

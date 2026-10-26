@@ -107,6 +107,12 @@ Everything lives in the **Design Values** section at the bottom of `SKILL.md` â€
 
 ---
 
+## Credits
+
+Parts of this skill were adapted from [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) by Leon Lin, MIT licensed. Details are at the end of [SKILL.md](./skills/redesign-existing-projects/SKILL.md#credits).
+
+---
+
 ## License
 
 MIT. Use it, fork it, ship it, sell what you build with it. No attribution needed.
